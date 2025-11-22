@@ -1,0 +1,172 @@
+{
+    "info": {
+        "_postman_id": "epimanager-mvp",
+        "name": "Epimanager MVP",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Employees",
+            "item": [
+                {
+                    "name": "Create Employee",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"João da Silva\",\n    \"cpf\": \"123.456.789-00\",\n    \"role\": \"MOTOQUEIRO\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/employees",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "employees"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Employees",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/employees",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "employees"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "EPIs",
+            "item": [
+                {
+                    "name": "Create EPI",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Capacete de Segurança\",\n    \"ca\": \"12345\",\n    \"currentStock\": 10,\n    \"unitCost\": 50.00,\n    \"allowedRoles\": [\"MOTOQUEIRO\", \"ELETRICISTA\"]\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/epis",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "epis"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List All EPIs",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/epis",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "epis"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Recommended EPIs",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/epis/recommended?role=MOTOQUEIRO",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "epis",
+                                "recommended"
+                            ],
+                            "query": [
+                                {
+                                    "key": "role",
+                                    "value": "MOTOQUEIRO"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Deliveries",
+            "item": [
+                {
+                    "name": "Create Delivery",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"employeeId\": 1,\n    \"epiId\": 1,\n    \"photoPath\": \"/tmp/photo.jpg\",\n    \"signaturePath\": \"/tmp/signature.png\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/deliveries",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "deliveries"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}
