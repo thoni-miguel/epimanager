@@ -9,7 +9,9 @@ import com.thoni.epimanager.repository.FuncionarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EntregaService {
@@ -45,10 +47,21 @@ public class EntregaService {
         Entrega entrega = new Entrega();
         entrega.setFuncionario(funcionario);
         entrega.setEpi(epi);
-        entrega.setDataEntrega(LocalDateTime.now());
+        entrega.setDataEntrega(LocalDate.now());
+
+        // Calculate limit date based on EPI durability
+        if (epi.getLimiteTrocaEmDias() != null) {
+            entrega.setDataLimiteTroca(LocalDate.now().plusDays(epi.getLimiteTrocaEmDias()));
+        }
+
         entrega.setFotoPath(fotoPath);
         entrega.setAssinaturaPath(assinaturaPath);
 
         return entregaRepository.save(entrega);
+    }
+
+    public List<Entrega> listarVencimentosProximos(int dias) {
+        LocalDate dataLimite = LocalDate.now().plusDays(dias);
+        return entregaRepository.findVencendoAte(dataLimite);
     }
 }

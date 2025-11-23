@@ -55,6 +55,8 @@ public class DatabaseSeeder implements CommandLineRunner {
         List<String> lines = Files.readAllLines(mdPath);
         parseAndSeed(lines);
 
+        seedDurabilityFromCsv();
+
         System.out.println("Seeding complete!");
     }
 
@@ -134,6 +136,45 @@ public class DatabaseSeeder implements CommandLineRunner {
         relacao.setEpi(epi);
         relacao.setCondicao(condicao);
         atividadeEpiRepository.save(relacao);
+    }
+
+    private void seedDurabilityFromCsv() {
+        try {
+            Path csvPath = Paths
+                    .get("docs/arquivos_ismael/Planilha Integrada de Gestão de EPIs - IBM CONSULTORIA - Sheet1.csv");
+            if (!Files.exists(csvPath)) {
+                System.out.println("CSV file not found: " + csvPath);
+                return;
+            }
+
+            List<String> lines = Files.readAllLines(csvPath);
+            for (int i = 1; i < lines.size(); i++) { // Skip header
+                String line = lines.get(i);
+                String[] parts = line.split(",");
+                if (parts.length < 5)
+                    continue;
+
+                String epiName = parts[1].trim();
+                String limiteTrocaStr = parts[4].trim();
+
+                if (limiteTrocaStr.toLowerCase().contains("meses")) {
+                    try {
+                        int meses = Integer.parseInt(limiteTrocaStr.replaceAll("[^0-9]", ""));
+                        int dias = meses * 30;
+
+                        epiRepository.findByNome(epiName).ifPresent(epi -> {
+                            epi.setLimiteTrocaEmDias(dias);
+                            epiRepository.save(epi);
+                            System.out.println("Updated durability for " + epiName + ": " + dias + " days");
+                        });
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error parsing durability for " + epiName + ": " + limiteTrocaStr);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private String extractItemContent(String line) {

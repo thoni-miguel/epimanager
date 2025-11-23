@@ -26,4 +26,7 @@ public class Epi {
 
     @NotNull
     private BigDecimal custoUnitario;
+
+    private Integer limiteTrocaEmDias = 365; // Default 1 year if not specified
+
 }

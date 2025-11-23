@@ -1,8 +1,10 @@
 package com.thoni.epimanager.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,8 +23,13 @@ public class Entrega {
     @JoinColumn(name = "epi_id", nullable = false)
     private Epi epi;
 
+    @NotNull
     @Column(nullable = false)
-    private LocalDateTime dataEntrega;
+    private LocalDate dataEntrega;
+
+    private LocalDate dataLimiteTroca;
+
+    private LocalDate dataDevolucao;
 
     private String assinaturaPath;
     private String fotoPath;

@@ -3,9 +3,10 @@ package com.thoni.epimanager.controller;
 import com.thoni.epimanager.dto.EntregaRequest;
 import com.thoni.epimanager.entity.Entrega;
 import com.thoni.epimanager.service.EntregaService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/entregas")
@@ -18,12 +19,18 @@ public class EntregaController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Entrega create(@RequestBody @Valid EntregaRequest request) {
-        return entregaService.registrarEntrega(
+    public ResponseEntity<Entrega> registrarEntrega(@RequestBody EntregaRequest request) {
+        Entrega entrega = entregaService.registrarEntrega(
                 request.funcionarioId(),
                 request.epiId(),
                 request.fotoPath(),
                 request.assinaturaPath());
+        return ResponseEntity.ok(entrega);
+    }
+
+    @GetMapping("/vencendo")
+    public ResponseEntity<List<Entrega>> listarVencimentos(@RequestParam(defaultValue = "7") int dias) {
+        List<Entrega> entregas = entregaService.listarVencimentosProximos(dias);
+        return ResponseEntity.ok(entregas);
     }
 }

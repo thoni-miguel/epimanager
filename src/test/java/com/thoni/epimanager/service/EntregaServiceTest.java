@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,8 +54,9 @@ class EntregaServiceTest {
     }
 
     @Test
-    @DisplayName("Deve registrar entrega com sucesso e decrementar estoque")
-    void registrarEntrega_ShouldCreateDeliveryAndDecrementStock() {
+    @DisplayName("Deve registrar entrega com sucesso e calcular data limite de troca")
+    void registrarEntrega_ShouldCreateDeliveryAndCalculateLimitDate() {
+        epi.setLimiteTrocaEmDias(180);
         when(funcionarioRepository.findById(1L)).thenReturn(Optional.of(funcionario));
         when(epiRepository.findById(1L)).thenReturn(Optional.of(epi));
         when(entregaRepository.save(any(Entrega.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -61,9 +64,23 @@ class EntregaServiceTest {
         Entrega result = entregaService.registrarEntrega(1L, 1L, "foto.jpg", "ass.png");
 
         assertNotNull(result);
-        assertEquals(9, epi.getEstoqueAtual()); // Stock should be decremented
-        verify(epiRepository, times(1)).save(epi);
+        assertEquals(9, epi.getEstoqueAtual());
+        assertNotNull(result.getDataLimiteTroca());
+        assertEquals(LocalDate.now().plusDays(180), result.getDataLimiteTroca());
         verify(entregaRepository, times(1)).save(any(Entrega.class));
+    }
+
+    @Test
+    @DisplayName("Deve listar entregas próximas do vencimento")
+    void listarVencimentosProximos_ShouldReturnDeliveries() {
+        LocalDate dataLimite = LocalDate.now().plusDays(7);
+        when(entregaRepository.findVencendoAte(dataLimite)).thenReturn(List.of(new Entrega()));
+
+        List<Entrega> result = entregaService.listarVencimentosProximos(7);
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        verify(entregaRepository, times(1)).findVencendoAte(dataLimite);
     }
 
     @Test
