@@ -6,19 +6,20 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "employees")
-public class Employee {
+@Table(name = "funcionarios")
+public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    private String name;
+    private String nome;
 
     @NotBlank
     @Column(unique = true)
     private String cpf;
 
-    @NotBlank
-    private String role;
+    @ManyToOne
+    @JoinColumn(name = "cargo_id", nullable = false)
+    private Cargo cargo;
 }

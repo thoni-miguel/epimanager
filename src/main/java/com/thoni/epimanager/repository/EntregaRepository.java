@@ -1,9 +1,9 @@
 package com.thoni.epimanager.repository;
 
-import com.thoni.epimanager.entity.Employee;
+import com.thoni.epimanager.entity.Entrega;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EntregaRepository extends JpaRepository<Entrega, Long> {
 }

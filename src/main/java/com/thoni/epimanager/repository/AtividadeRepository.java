@@ -1,12 +1,12 @@
 package com.thoni.epimanager.repository;
 
-import com.thoni.epimanager.entity.Epi;
+import com.thoni.epimanager.entity.Atividade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface EpiRepository extends JpaRepository<Epi, Long> {
-    Optional<Epi> findByNome(String nome);
+public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
+    Optional<Atividade> findByNome(String nome);
 }

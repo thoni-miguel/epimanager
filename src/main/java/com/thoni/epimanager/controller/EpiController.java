@@ -23,9 +23,9 @@ public class EpiController {
         return epiService.findAll();
     }
 
-    @GetMapping("/recommended")
-    public List<Epi> listRecommended(@RequestParam String role) {
-        return epiService.findRecommendedForRole(role);
+    @GetMapping("/recomendados")
+    public List<Epi> listRecommended(@RequestParam Long cargoId) {
+        return epiService.findRecomendadosPorCargo(cargoId);
     }
 
     @PostMapping
