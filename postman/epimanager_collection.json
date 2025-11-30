@@ -1,16 +1,99 @@
 {
 	"info": {
 		"_postman_id": "epimanager-mvp",
-		"name": "Epimanager MVP (PT-BR)",
+		"name": "Epimanager MVP (PT-BR) - Com Autenticação",
+		"description": "Collection atualizada com endpoints de autenticação Spring Security",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Funcionários",
+			"name": "🔐 Autenticação",
+			"description": "Endpoints públicos para registro e login",
+			"item": [
+				{
+					"name": "Registrar Usuário",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Cria um novo usuário no sistema. Retorna 201 Created se sucesso."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Autentica usuário e retorna token. Use Basic Auth nos endpoints protegidos."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "👤 Funcionários",
+			"description": "CRUD de Funcionários (requer autenticação)",
 			"item": [
 				{
 					"name": "Criar Funcionário",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -39,6 +122,21 @@
 				{
 					"name": "Listar Funcionários",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -58,11 +156,27 @@
 			]
 		},
 		{
-			"name": "EPIs",
+			"name": "🛡️ EPIs",
+			"description": "Gestão de EPIs (requer autenticação)",
 			"item": [
 				{
 					"name": "Criar EPI",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -91,6 +205,21 @@
 				{
 					"name": "Listar Todos EPIs",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -110,6 +239,21 @@
 				{
 					"name": "Listar EPIs Recomendados",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -136,11 +280,27 @@
 			]
 		},
 		{
-			"name": "Entregas",
+			"name": "📦 Entregas",
+			"description": "Registro e consulta de entregas (requer autenticação)",
 			"item": [
 				{
 					"name": "Registrar Entrega",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -169,6 +329,21 @@
 				{
 					"name": "Listar Entregas Vencendo",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -185,7 +360,8 @@
 							"query": [
 								{
 									"key": "dias",
-									"value": "7"
+									"value": "7",
+									"description": "Número de dias à frente para verificar vencimentos"
 								}
 							]
 						}
