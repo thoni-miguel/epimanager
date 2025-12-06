@@ -8,8 +8,11 @@ import com.thoni.epimanager.repository.AtividadeEpiRepository;
 import com.thoni.epimanager.repository.AtividadeRepository;
 import com.thoni.epimanager.repository.CargoRepository;
 import com.thoni.epimanager.repository.EpiRepository;
+import com.thoni.epimanager.entity.User;
+import com.thoni.epimanager.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -25,13 +28,18 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final CargoRepository cargoRepository;
     private final EpiRepository epiRepository;
     private final AtividadeEpiRepository atividadeEpiRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DatabaseSeeder(AtividadeRepository atividadeRepository, CargoRepository cargoRepository,
-            EpiRepository epiRepository, AtividadeEpiRepository atividadeEpiRepository) {
+            EpiRepository epiRepository, AtividadeEpiRepository atividadeEpiRepository,
+            UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.atividadeRepository = atividadeRepository;
         this.cargoRepository = cargoRepository;
         this.epiRepository = epiRepository;
         this.atividadeEpiRepository = atividadeEpiRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -42,8 +50,12 @@ public class DatabaseSeeder implements CommandLineRunner {
         cargoRepository.deleteAll();
         atividadeRepository.deleteAll();
         epiRepository.deleteAll();
+        userRepository.deleteAll();
 
         System.out.println("Database cleared. Seeding from Markdown...");
+
+        // Seed default admin user
+        seedDefaultUser();
 
         Path mdPath = Paths.get("docs/especific_epi_infos.md");
 
@@ -183,8 +195,23 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
     private String cleanEpiName(String name) {
-        // Remove prefix "Ruído: "
-        return name.replaceAll("^.*:\\s+", "").trim();
+        return name.replaceAll("\\*\\*", "").trim();
+    }
+
+    /**
+     * Cria usuário admin padrão para facilitar testes
+     * Username: admin
+     * Password: admin123
+     */
+    private void seedDefaultUser() {
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword(passwordEncoder.encode("admin123"));
+        admin.setRole("ADMIN");
+
+        userRepository.save(admin);
+
+        System.out.println("✅ Default user created: admin / admin123");
     }
 
     private String extractCondition(String name) {
