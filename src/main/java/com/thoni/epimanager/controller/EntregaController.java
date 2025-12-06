@@ -30,8 +30,8 @@ public class EntregaController {
         Entrega entrega = entregaService.registrarEntrega(
                 request.funcionarioId(),
                 request.epiId(),
-                request.fotoPath(),
-                request.assinaturaPath());
+                request.fotoBase64(),
+                request.assinaturaBase64());
         return ResponseEntity.ok(entrega);
     }
 
@@ -41,5 +41,13 @@ public class EntregaController {
             @Parameter(description = "Número de dias à frente", example = "7") @RequestParam(defaultValue = "7") int dias) {
         List<Entrega> entregas = entregaService.listarVencimentosProximos(dias);
         return ResponseEntity.ok(entregas);
+    }
+
+    @PutMapping("/{id}/devolver")
+    @Operation(summary = "Registrar devolução de EPI", description = "Marca EPI como devolvido e incrementa estoque. Não pode devolver EPI já devolvido.")
+    public ResponseEntity<Entrega> devolverEpi(
+            @Parameter(description = "ID da entrega", example = "1") @PathVariable Long id) {
+        Entrega entrega = entregaService.registrarDevolucao(id);
+        return ResponseEntity.ok(entrega);
     }
 }
